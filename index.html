@@ -6,208 +6,196 @@
 <title>Cardápio Interativo - Vidal Burgers</title>
 <meta name="description" content="Cardápio online da Vidal Burgers. Escolha seu lanche, veja o total e envie o pedido completo direto pelo WhatsApp.">
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #fff8f0;
-        margin: 0;
-        padding: 0;
-        color: #333;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fff8f0;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
 
-    header {
-        background-color: #ff7b00;
-        color: white;
-        padding: 20px 10px;
-        text-align: center;
-    }
+  header {
+    background-color: #ff7b00;
+    color: white;
+    padding: 20px 10px;
+    text-align: center;
+  }
 
+  h1 {
+    margin: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column; /* ✅ Agora tudo fica em coluna (um embaixo do outro) */
+    align-items: center;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 15px;
+    width: 95%;
+    max-width: 400px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .item img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .item img:hover {
+    transform: scale(1.03);
+  }
+
+  .item h3 {
+    color: #ff7b00;
+    margin: 5px 0;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .item p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  .price {
+    font-weight: bold;
+    color: #222;
+    margin: 10px 0;
+  }
+
+  button {
+    background-color: #ff7b00;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin-bottom: 5px;
+  }
+
+  button:hover {
+    background-color: #e36f00;
+  }
+
+  hr {
+    margin: 30px auto;
+    width: 80%;
+    border: none;
+    border-top: 2px dashed #ccc;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+  }
+
+  #pedido {
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 0 10px;
+  }
+
+  /* Responsividade aprimorada */
+  @media (max-width: 600px) {
     h1 {
-        margin: 0;
+      font-size: 1.6rem;
     }
-
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 15px;
-    }
-
     .item {
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        margin: 10px;
-        padding: 15px;
-        width: 300px;
-        max-width: 90vw;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      width: 90%;
+      padding: 12px;
     }
-
-    .item img {
-        width: 100%;
-        border-radius: 15px;
-        margin-bottom: 10px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        transition: transform 0.2s ease-in-out;
-    }
-
-    .item img:hover {
-        transform: scale(1.03);
-    }
-
     .item h3 {
-        color: #ff7b00;
-        margin: 5px 0;
-        font-size: 1.2rem;
-        text-align: center;
+      font-size: 1.1rem;
     }
-
-    .item p {
-        font-size: 14px;
-        color: #555;
-        margin: 5px 0;
-        text-align: center;
-    }
-
-    .price {
-        font-weight: bold;
-        color: #222;
-        margin-bottom: 10px;
-    }
-
     button {
-        background-color: #ff7b00;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.2s;
-        margin-bottom: 10px;
+      width: 100%;
+      font-size: 1rem;
+      padding: 12px;
     }
-
-    button:hover {
-        background-color: #e36f00;
-    }
-
-    hr {
-        margin: 30px auto;
-        width: 80%;
-        border: none;
-        border-top: 2px dashed #ccc;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-        text-align: center; /* Centraliza o texto da lista de pedidos */
-    }
-
-    #pedido {
-        margin-top: 10px;
-        font-size: 1rem;
-    }
-
-    .actions {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 20px 0;
-        padding: 0 10px;
-    }
-
-    /* Responsividade para telas menores */
-    @media (max-width: 600px) {
-        header {
-            padding: 15px;
-        }
-        h1 {
-            font-size: 1.6rem;
-        }
-        .item {
-            width: 90%;
-            padding: 10px;
-        }
-        .item h3 {
-            font-size: 1.1rem;
-        }
-        button {
-            width: 100%;
-            font-size: 1rem;
-            padding: 12px;
-        }
-        .actions {
-            flex-direction: column;
-            align-items: center;
-        }
-        #pedido {
-            font-size: 0.95rem;
-        }
-    }
+  }
 </style>
 </head>
 <body>
 
 <header>
-    <h1>🍔 Vidal Burgers</h1>
-    <p>Monte seu pedido e envie direto pelo WhatsApp!</p>
+  <h1>🍔 Vidal Burgers</h1>
+  <p>Monte seu pedido e envie direto pelo WhatsApp!</p>
 </header>
 
 <div class="container">
+  <div class="item">
+    <img src="Classico da Casa.png" alt="Clássico da Casa">
+    <h3>Clássico da Casa</h3>
+    <p>Pão brioche, hambúrguer 150g, queijo prato, alface, tomate e maionese especial.</p>
+    <p class="price">R$ 24,00</p>
+    <button onclick="addItem('Clássico da Casa')">Adicionar</button>
+  </div>
 
-    <div class="item">
-        <img src="Classico da Casa.png" alt="Clássico da Casa">
-        <h3>Clássico da Casa</h3>
-        <p>Pão brioche, hambúrguer 150g, queijo prato, alface, tomate e maionese especial.</p>
-        <p class="price">R$ 24,00</p>
-        <button onclick="addItem('Clássico da Casa')">Adicionar</button>
-    </div>
+  <div class="item">
+    <img src="EGG burges.jpg" alt="Egg Burguer">
+    <h3>Egg Burguer</h3>
+    <p>Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana.</p>
+    <p class="price">R$ 25,00</p>
+    <button onclick="addItem('Egg Burguer')">Adicionar</button>
+  </div>
 
-    <div class="item">
-        <img src="EGG burges.jpg" alt="Egg Burguer">
-        <h3>Egg Burguer</h3>
-        <p>Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana.</p>
-        <p class="price">R$ 25,00</p>
-        <button onclick="addItem('Egg Burguer')">Adicionar</button>
-    </div>
+  <div class="item">
+    <img src="Smash tradicional.png" alt="Smash Tradicional">
+    <h3>Smash Tradicional</h3>
+    <p>Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa no pão macio.</p>
+    <p class="price">R$ 27,00</p>
+    <button onclick="addItem('Smash Tradicional')">Adicionar</button>
+  </div>
 
-    <div class="item">
-        <img src="Smash tradicional.png" alt="Smash Tradicional">
-        <h3>Smash Tradicional</h3>
-        <p>Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa no pão macio.</p>
-        <p class="price">R$ 27,00</p>
-        <button onclick="addItem('Smash Tradicional')">Adicionar</button>
-    </div>
+  <div class="item">
+    <img src="Cheddar bacon.png" alt="Cheddar & Bacon">
+    <h3>Cheddar & Bacon</h3>
+    <p>Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue no pão australiano.</p>
+    <p class="price">R$ 28,00</p>
+    <button onclick="addItem('Cheddar & Bacon')">Adicionar</button>
+  </div>
 
-    <div class="item">
-        <img src="Cheddar bacon.png" alt="Cheddar & Bacon">
-        <h3>Cheddar & Bacon</h3>
-        <p>Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue no pão australiano.</p>
-        <p class="price">R$ 28,00</p>
-        <button onclick="addItem('Cheddar & Bacon')">Adicionar</button>
-    </div>
+  <div class="item">
+    <img src="Duplo Sabor.png" alt="Duplo Sabor">
+    <h3>Duplo Sabor</h3>
+    <p>Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada.</p>
+    <p class="price">R$ 32,00</p>
+    <button onclick="addItem('Duplo Sabor')">Adicionar</button>
+  </div>
 
-    <div class="item">
-        <img src="Duplo Sabor.png" alt="Duplo Sabor">
-        <h3>Duplo Sabor</h3>
-        <p>Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada.</p>
-        <p class="price">R$ 32,00</p>
-        <button onclick="addItem('Duplo Sabor')">Adicionar</button>
-    </div>
-
-    <div class="item">
-        <img src="Veggie Grill.png" alt="Veggie Grill">
-        <h3>Veggie Grill</h3>
-        <p>Hambúrguer de grão-de-bico, queijo vegano, alface, tomate e molho de iogurte natural.</p>
-        <p class="price">R$ 32,00</p>
-        <button onclick="addItem('Veggie Grill')">Adicionar</button>
-    </div>
-
+  <div class="item">
+    <img src="Veggie Grill.png" alt="Veggie Grill">
+    <h3>Veggie Grill</h3>
+    <p>Hambúrguer de grão-de-bico, queijo vegano, alface, tomate e molho de iogurte natural.</p>
+    <p class="price">R$ 32,00</p>
+    <button onclick="addItem('Veggie Grill')">Adicionar</button>
+  </div>
 </div>
 
 <hr>
@@ -216,84 +204,75 @@
 <ul id="pedido"></ul>
 
 <div class="actions">
-    <button onclick="enviarWhatsApp()">📲 Enviar Pedido</button>
-    <button onclick="limparCarrinho()">🧹 Limpar Carrinho</button>
+  <button onclick="enviarWhatsApp()">📲 Enviar Pedido</button>
+  <button onclick="limparCarrinho()">🧹 Limpar Carrinho</button>
 </div>
 
 <script>
-    let carrinho = {};
-    // 💡 Tabela de preços atualizada com todos os 6 itens
-    const precos = {
-        'Clássico da Casa': 24.00,
-        'Egg Burguer': 25.00,
-        'Smash Tradicional': 27.00,
-        'Cheddar & Bacon': 28.00,
-        'Duplo Sabor': 32.00,
-        'Veggie Grill': 32.00
-    };
+  let carrinho = {};
+  const precos = {
+    'Clássico da Casa': 24.00,
+    'Egg Burguer': 25.00,
+    'Smash Tradicional': 27.00,
+    'Cheddar & Bacon': 28.00,
+    'Duplo Sabor': 32.00,
+    'Veggie Grill': 32.00
+  };
 
-    function addItem(item) {
-        carrinho[item] = (carrinho[item] || 0) + 1;
-        atualizarCarrinho();
+  function addItem(item) {
+    carrinho[item] = (carrinho[item] || 0) + 1;
+    atualizarCarrinho();
+  }
+
+  function atualizarCarrinho() {
+    const lista = document.getElementById("pedido");
+    lista.innerHTML = "";
+    let total = 0;
+
+    for (let item in carrinho) {
+      const qtd = carrinho[item];
+      const preco = precos[item];
+      const subtotal = qtd * preco;
+      total += subtotal;
+      lista.innerHTML += `<li>${item} x${qtd} - R$ ${subtotal.toFixed(2).replace('.', ',')}</li>`;
     }
 
-    function atualizarCarrinho() {
-        const lista = document.getElementById("pedido");
-        lista.innerHTML = "";
-        let total = 0; 
+    if (total > 0) {
+      lista.innerHTML += `<li style="margin-top:10px; font-weight:bold; color:#ff7b00;">TOTAL: R$ ${total.toFixed(2).replace('.', ',')}</li>`;
+    }
+  }
 
-        for (let item in carrinho) {
-            const quantidade = carrinho[item];
-            const precoUnitario = precos[item] || 0; 
-            const subtotal = quantidade * precoUnitario;
-            total += subtotal; 
-            // Mostra o subtotal de cada item
-            lista.innerHTML += `<li>${item} x${quantidade} - R$ ${subtotal.toFixed(2).replace('.', ',')}</li>`;
-        }
+  function limparCarrinho() {
+    if (Object.keys(carrinho).length === 0) {
+      alert("O carrinho já está vazio!");
+      return;
+    }
+    if (confirm("Tem certeza que deseja limpar o carrinho?")) {
+      carrinho = {};
+      atualizarCarrinho();
+    }
+  }
 
-        if (total > 0) {
-            // Mostra o total final do pedido
-            lista.innerHTML += `<li style="margin-top: 15px; font-weight: bold; color: #ff7b00;">TOTAL: R$ ${total.toFixed(2).replace('.', ',')}</li>`;
-        }
+  function enviarWhatsApp() {
+    if (Object.keys(carrinho).length === 0) {
+      alert("Você ainda não adicionou nenhum item ao pedido!");
+      return;
     }
 
-    function limparCarrinho() {
-        if (Object.keys(carrinho).length === 0) {
-            alert("O carrinho já está vazio!");
-            return;
-        }
-        if (confirm("Tem certeza que deseja limpar o carrinho?")) {
-            carrinho = {};
-            atualizarCarrinho();
-        }
+    let mensagem = "Olá! Quero fazer meu pedido:%0A";
+    let total = 0;
+    for (let item in carrinho) {
+      const qtd = carrinho[item];
+      const preco = precos[item];
+      const subtotal = qtd * preco;
+      total += subtotal;
+      mensagem += `- ${item} x${qtd} (R$ ${subtotal.toFixed(2).replace('.', ',')})%0A`;
     }
+    mensagem += "%0A*Total do Pedido: R$ " + total.toFixed(2).replace('.', ',') + "*%0A%0AObrigado(a)! 😋";
 
-    function enviarWhatsApp() {
-        if (Object.keys(carrinho).length === 0) {
-            alert("Você ainda não adicionou nenhum item ao pedido!");
-            return;
-        }
-
-        let mensagem = "Olá! Quero fazer meu pedido:%0A";
-        let total = 0;
-
-        for (let item in carrinho) {
-            const quantidade = carrinho[item];
-            const precoUnitario = precos[item] || 0;
-            const subtotal = quantidade * precoUnitario;
-            total += subtotal;
-
-            mensagem += `- ${item} x${quantidade} (R$ ${subtotal.toFixed(2).replace('.', ',')})%0A`;
-        }
-
-        // Adiciona o total na mensagem do WhatsApp
-        mensagem += "%0A*Total do Pedido: R$ " + total.toFixed(2).replace('.', ',') + "*%0A%0AObrigado(a)! 😋";
-
-        const numero = "5517991213435";
-        const link = "https://wa.me/" + numero + "?text=" + encodeURIComponent(decodeURIComponent(mensagem));
-
-        window.open(link, "_blank");
-    }
+    const numero = "5517991213435";
+    window.open("https://wa.me/" + numero + "?text=" + encodeURIComponent(decodeURIComponent(mensagem)), "_blank");
+  }
 </script>
 
 </body>
