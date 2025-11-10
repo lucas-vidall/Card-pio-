@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardápio Interativo - Portfólio Lucas Vidal</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fff8f0;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #333;
+  }
+  header {
+    background-color: #ff7b00;
+    color: white;
+    padding: 20px 10px;
+  }
+  h1 {
+    margin: 0;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
+  .item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 15px;
+    width: 280px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .item h3 {
+    color: #ff7b00;
+    margin-bottom: 5px;
+  }
+  .item p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .price {
+    font-weight: bold;
+    color: #222;
+  }
+  button {
+    background-color: #ff7b00;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover {
+    background-color: #e36f00;
+  }
+  hr {
+    margin: 30px auto;
+    width: 80%;
+    border: none;
+    border-top: 2px dashed #ccc;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  #pedido {
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍔 Cardápio Interativo</h1>
+  <p>Escolha seus lanches e envie o pedido direto pelo WhatsApp!</p>
+</header>
+
+<div class="container">
+  <div class="item">
+    <h3>Egg Burguer</h3>
+    <p>Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana.</p>
+    <p class="price">R$ 25,00</p>
+    <button onclick="addItem('Egg Burguer')">Adicionar</button>
+  </div>
+
+  <div class="item">
+    <h3>Cheddar & Bacon</h3>
+    <p>Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue no pão australiano.</p>
+    <p class="price">R$ 28,00</p>
+    <button onclick="addItem('Cheddar & Bacon')">Adicionar</button>
+  </div>
+
+  <div class="item">
+    <h3>Duplo Sabor</h3>
+    <p>Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada.</p>
+    <p class="price">R$ 32,00</p>
+    <button onclick="addItem('Duplo Sabor')">Adicionar</button>
+  </div>
+
+  <div class="item">
+    <h3>Veggie Grill</h3>
+    <p>Hambúrguer de grão-de-bico, queijo vegano, alface, tomate e molho de iogurte natural.</p>
+    <p class="price">R$ 32,00</p>
+    <button onclick="addItem('Veggie Grill')">Adicionar</button>
+  </div>
+
+  <div class="item">
+    <h3>Clássico da Casa</h3>
+    <p>Pão brioche, hambúrguer 150g, queijo prato, alface, tomate e maionese especial.</p>
+    <p class="price">R$ 24,00</p>
+    <button onclick="addItem('Clássico da Casa')">Adicionar</button>
+  </div>
+
+  <div class="item">
+    <h3>Smash Tradicional</h3>
+    <p>Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa no pão macio.</p>
+    <p class="price">R$ 27,00</p>
+    <button onclick="addItem('Smash Tradicional')">Adicionar</button>
+  </div>
+</div>
+
+<hr>
+
+<h2>🛒 Seu Pedido</h2>
+<ul id="pedido"></ul>
+<button onclick="enviarWhatsApp()">📲 Enviar Pedido</button>
+
+<script>
+  let carrinho = {};
+
+  function addItem(item) {
+    if (carrinho[item]) {
+      carrinho[item]++;
+    } else {
+      carrinho[item] = 1;
+    }
+    atualizarCarrinho();
+  }
+
+  function atualizarCarrinho() {
+    const lista = document.getElementById("pedido");
+    lista.innerHTML = "";
+    for (let item in carrinho) {
+      lista.innerHTML += `<li>${item} x${carrinho[item]}</li>`;
+    }
+  }
+
+  function enviarWhatsApp() {
+    if (Object.keys(carrinho).length === 0) {
+      alert("Você ainda não adicionou nenhum item ao pedido!");
+      return;
+    }
+
+    let mensagem = "Olá! Quero fazer meu pedido:%0A";
+    for (let item in carrinho) {
+      mensagem += `- ${item} x${carrinho[item]}%0A`;
+    }
+    mensagem += "%0AObrigado(a)! 😋";
+
+    const numero = "5517991213435";
+    const link = `https://wa.me/${numero}?text=${mensagem}`;
+    window.open(link, "_blank");
+  }
+</script>
+
+</body>
+</html>
