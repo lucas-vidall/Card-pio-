@@ -57,6 +57,7 @@
     padding: 8px 15px;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.2s;
   }
   button:hover {
     background-color: #e36f00;
@@ -73,6 +74,9 @@
   }
   #pedido {
     margin-top: 10px;
+  }
+  .actions {
+    margin-top: 20px;
   }
 </style>
 </head>
@@ -131,17 +135,17 @@
 
 <h2>🛒 Seu Pedido</h2>
 <ul id="pedido"></ul>
-<button onclick="enviarWhatsApp()">📲 Enviar Pedido</button>
+
+<div class="actions">
+  <button onclick="enviarWhatsApp()">📲 Enviar Pedido</button>
+  <button onclick="limparCarrinho()">🧹 Limpar Carrinho</button>
+</div>
 
 <script>
   let carrinho = {};
 
   function addItem(item) {
-    if (carrinho[item]) {
-      carrinho[item]++;
-    } else {
-      carrinho[item] = 1;
-    }
+    carrinho[item] = (carrinho[item] || 0) + 1;
     atualizarCarrinho();
   }
 
@@ -150,6 +154,17 @@
     lista.innerHTML = "";
     for (let item in carrinho) {
       lista.innerHTML += `<li>${item} x${carrinho[item]}</li>`;
+    }
+  }
+
+  function limparCarrinho() {
+    if (Object.keys(carrinho).length === 0) {
+      alert("O carrinho já está vazio!");
+      return;
+    }
+    if (confirm("Tem certeza que deseja limpar o carrinho?")) {
+      carrinho = {};
+      atualizarCarrinho();
     }
   }
 
@@ -166,7 +181,9 @@
     mensagem += "%0AObrigado(a)! 😋";
 
     const numero = "5517991213435";
-    const link = `https://wa.me/${numero}?text=${mensagem}`;
+    const link = "https://wa.me/" + numero + "?text=" + encodeURIComponent(decodeURIComponent(mensagem));
+
+    // Usa encodeURIComponent para garantir que toda a mensagem seja enviada corretamente
     window.open(link, "_blank");
   }
 </script>
