@@ -3,118 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardápio Interativo - Portfólio Lucas Vidal</title>
+<title>Cardápio Interativo - Vidal Burgers</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background-color: #fff8f0;
     margin: 0;
     padding: 0;
-    text-align: center;
     color: #333;
   }
+
   header {
     background-color: #ff7b00;
     color: white;
     padding: 20px 10px;
+    text-align: center;
   }
+
   h1 {
     margin: 0;
   }
+
   .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 20px;
+    padding: 15px;
   }
+
   .item {
     background: white;
     border: 1px solid #ddd;
     border-radius: 15px;
-    margin: 15px;
+    margin: 10px;
     padding: 15px;
-    width: 280px;
+    width: 300px;
+    max-width: 90vw;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .item img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .item img:hover {
+    transform: scale(1.03);
+  }
+
   .item h3 {
     color: #ff7b00;
-    margin-bottom: 5px;
+    margin: 5px 0;
+    font-size: 1.2rem;
+    text-align: center;
   }
+
   .item p {
     font-size: 14px;
     color: #555;
-    margin-bottom: 10px;
+    margin: 5px 0;
+    text-align: center;
   }
+
   .price {
     font-weight: bold;
     color: #222;
+    margin-bottom: 10px;
   }
+
   button {
     background-color: #ff7b00;
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 8px 15px;
+    padding: 10px 20px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.2s;
+    margin-bottom: 10px;
   }
+
   button:hover {
     background-color: #e36f00;
   }
+
   hr {
     margin: 30px auto;
     width: 80%;
     border: none;
     border-top: 2px dashed #ccc;
   }
+
   ul {
     list-style: none;
     padding: 0;
   }
+
   #pedido {
     margin-top: 10px;
+    font-size: 1rem;
   }
+
   .actions {
-    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 0 10px;
+  }
+
+  /* Responsividade para telas menores */
+  @media (max-width: 600px) {
+    header {
+      padding: 15px;
+    }
+    h1 {
+      font-size: 1.6rem;
+    }
+    .item {
+      width: 90%;
+      padding: 10px;
+    }
+    .item h3 {
+      font-size: 1.1rem;
+    }
+    button {
+      width: 100%;
+      font-size: 1rem;
+      padding: 12px;
+    }
+    .actions {
+      flex-direction: column;
+      align-items: center;
+    }
+    #pedido {
+      font-size: 0.95rem;
+    }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🍔 Cardápio Interativo</h1>
-  <p>Escolha seus lanches e envie o pedido direto pelo WhatsApp!</p>
+  <h1>🍔 Vidal Burgers</h1>
+  <p>Monte seu pedido e envie direto pelo WhatsApp!</p>
 </header>
 
 <div class="container">
-  <div class="item">
-    <h3>Egg Burguer</h3>
-    <p>Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana.</p>
-    <p class="price">R$ 25,00</p>
-    <button onclick="addItem('Egg Burguer')">Adicionar</button>
-  </div>
-
-  <div class="item">
-    <h3>Cheddar & Bacon</h3>
-    <p>Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue no pão australiano.</p>
-    <p class="price">R$ 28,00</p>
-    <button onclick="addItem('Cheddar & Bacon')">Adicionar</button>
-  </div>
-
-  <div class="item">
-    <h3>Duplo Sabor</h3>
-    <p>Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada.</p>
-    <p class="price">R$ 32,00</p>
-    <button onclick="addItem('Duplo Sabor')">Adicionar</button>
-  </div>
-
-  <div class="item">
-    <h3>Veggie Grill</h3>
-    <p>Hambúrguer de grão-de-bico, queijo vegano, alface, tomate e molho de iogurte natural.</p>
-    <p class="price">R$ 32,00</p>
-    <button onclick="addItem('Veggie Grill')">Adicionar</button>
-  </div>
 
   <div class="item">
     <img src="Classico da Casa.png" alt="Clássico da Casa">
@@ -125,16 +167,26 @@
   </div>
 
   <div class="item">
+    <img src="EGG burges.jpg" alt="Egg Burguer">
+    <h3>Egg Burguer</h3>
+    <p>Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana.</p>
+    <p class="price">R$ 25,00</p>
+    <button onclick="addItem('Egg Burguer')">Adicionar</button>
+  </div>
+
+  <div class="item">
+    <img src="Smash tradicional.png" alt="Smash Tradicional">
     <h3>Smash Tradicional</h3>
     <p>Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa no pão macio.</p>
     <p class="price">R$ 27,00</p>
     <button onclick="addItem('Smash Tradicional')">Adicionar</button>
   </div>
+
 </div>
 
 <hr>
 
-<h2>🛒 Seu Pedido</h2>
+<h2 style="text-align:center;">🛒 Seu Pedido</h2>
 <ul id="pedido"></ul>
 
 <div class="actions">
@@ -184,12 +236,9 @@
     const numero = "5517991213435";
     const link = "https://wa.me/" + numero + "?text=" + encodeURIComponent(decodeURIComponent(mensagem));
 
-    // Usa encodeURIComponent para garantir que toda a mensagem seja enviada corretamente
     window.open(link, "_blank");
   }
 </script>
 
 </body>
 </html>
-
-
