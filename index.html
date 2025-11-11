@@ -463,18 +463,9 @@ function checkOpenStatus(){
 
 /* ---------- CHECKOUT FLOW ---------- */
 function toggleCheckoutOptions(){
-  // check open status first
-  const now = new Date();
-  const day = now.getDay();
-  const hour = now.getHours();
-  const isOpenDay = openDays.includes(day);
-  const isWithinHour = (hour >= openHour && hour < closeHour);
-  const open = isOpenDay && isWithinHour;
-  if(!open){
-    alert("No momento estamos fechados. Horário de funcionamento: Quarta a Domingo, das 18:00 às 23:00.");
-    return;
-  }
-
+  const co = document.getElementById('checkoutOptions');
+  co.style.display = co.style.display === 'none' || co.style.display === '' ? 'block' : 'none';
+}
   const co = document.getElementById('checkoutOptions');
   co.style.display = co.style.display === 'none' || co.style.display === '' ? 'block' : 'none';
 }
@@ -597,3 +588,4 @@ init();
 </script>
 </body>
 </html>
+
