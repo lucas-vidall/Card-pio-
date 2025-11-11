@@ -213,7 +213,6 @@ function toggleCheckoutOptions(){
 function setDelivery(f){
   isDelivery=f;
   document.getElementById('addressBlock').style.display=f?'block':'none';
-  document.getElementById('optDelivery').classList.toggle('active',f);
   updateCart();
 }
 function handleCepInput(e){e.target.value=e.target.value.replace(/[^0-9\-]/g,'');}
@@ -231,37 +230,67 @@ function buscarCep(){
 function onPaymentChange(){
   document.getElementById('cardOptions').style.display=document.getElementById('paymentMethod').value==='cartao'?'block':'none';
 }
+
+/* 🚀 NOVA FUNÇÃO OTIMIZADA PARA WHATSAPP */
 function sendOrder(){
   if(Object.keys(carrinho).length===0){alert("Adicione algo ao carrinho!");return;}
+
   let endereco="Retirada no local";
   if(isDelivery){
-    const cep=document.getElementById('cep').value.trim();
-    const log=document.getElementById('logradouro').value.trim();
-    const num=document.getElementById('numero').value.trim();
-    const bai=document.getElementById('bairro').value.trim();
-    const cid=document.getElementById('cidade').value.trim();
+    const cep=document.getElementById("cep").value.trim();
+    const log=document.getElementById("logradouro").value.trim();
+    const num=document.getElementById("numero").value.trim();
+    const bai=document.getElementById("bairro").value.trim();
+    const cid=document.getElementById("cidade").value.trim();
     if(!cep||!log||!num||!bai||!cid){alert("Preencha o endereço completo.");return;}
     endereco=`${log}, ${num} - ${bai} - ${cid} (CEP: ${cep})`;
   }
-  const pag=document.getElementById('paymentMethod').value;
+
+  const pag=document.getElementById("paymentMethod").value;
+  if(!pag){alert("Selecione a forma de pagamento.");return;}
   let pagamento="";
-  if(pag==='pix')pagamento="PIX";
-  else if(pag==='dinheiro')pagamento="Dinheiro";
-  else if(pag==='cartao')pagamento=`Cartão ${document.getElementById('cardType').value} - ${document.getElementById('cardBrand').value}`;
-  const obs=document.getElementById('obs').value.trim();
-  let msg=`Olá! Quero pedir na *Vidal Burgers*:%0A%0A`;
-  let sub=0;
+  if(pag==="pix")pagamento="✅ PIX";
+  else if(pag==="dinheiro")pagamento="💵 Dinheiro";
+  else if(pag==="cartao")pagamento=`💳 Cartão ${document.getElementById("cardType").value} - ${document.getElementById("cardBrand").value}`;
+
+  const obs=document.getElementById("obs").value.trim();
+
+  let msg=[];
+  msg.push("✅ *PEDIDO CONFIRMADO - VIDAL BURGERS* 🍔");
+  msg.push("────────────────────");
+  msg.push("*Itens:*");
+
+  let subtotal=0;
   Object.keys(carrinho).forEach(k=>{
     const it=carrinho[k];
-    sub+=it.preco*it.qtd;
-    msg+=`- ${k} x${it.qtd} (${currency.format(it.preco)})%0A`;
+    subtotal+=it.preco*it.qtd;
+    msg.push(`• ${k} x${it.qtd} (${currency.format(it.preco)})`);
   });
-  const taxa=isDelivery?DELIVERY_FEE:0,total=sub+taxa;
-  msg+=`%0A*Entrega:* ${endereco}%0A*Pagamento:* ${pagamento}%0A`;
-  if(obs)msg+=`*Obs:* ${obs}%0A`;
-  msg+=`*Total:* ${currency.format(total)}%0A`;
-  window.open(`https://wa.me/${numeroWhatsApp}?text=${msg}`,'_blank');
+
+  msg.push("────────────────────");
+  msg.push(`*Subtotal:* ${currency.format(subtotal)}`);
+
+  if(isDelivery){
+    msg.push(`*Entrega:* ${endereco}`);
+    msg.push(`*Taxa de entrega:* ${currency.format(DELIVERY_FEE)}`);
+  } else {
+    msg.push("*Retirada no local*");
+  }
+
+  msg.push(`*Pagamento:* ${pagamento}`);
+  if(obs) msg.push(`*Observações:* ${obs}`);
+
+  const total=subtotal+(isDelivery?DELIVERY_FEE:0);
+  msg.push("────────────────────");
+  msg.push(`💰 *Total:* ${currency.format(total)}`);
+  msg.push("");
+  msg.push("🙏 Obrigado(a) por pedir com a *Vidal Burgers*! 😄");
+
+  const textoFinal=msg.join("\r\n");
+  const link=`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(textoFinal)}`;
+  window.open(link,"_blank");
 }
+
 renderMenu();
 updateCart();
 </script>
