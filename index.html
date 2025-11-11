@@ -4,580 +4,246 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Vidal Burgers — Cardápio Interativo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --orange:#ff7b00;
-    --orange-dark:#e36f00;
-    --bg:#fff8f0;
-    --card:#ffffff;
-    --muted:#6b6b6b;
-    --success:#1b9a45;
-    --danger:#e74c3c;
-    --shadow: 0 6px 20px rgba(0,0,0,0.08);
-    --radius:14px;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:linear-gradient(180deg,#fffaf6 0%,var(--bg) 100%);
-    color:#222;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-  }
-
-  header{
-    background:linear-gradient(90deg,var(--orange),var(--orange-dark));
-    color:white;
-    padding:18px 16px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    justify-content:space-between;
-  }
-  header h1{margin:0;font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
-  header small{opacity:0.95;font-weight:500}
-
-  .wrap{
-    max-width:1100px;
-    margin:18px auto;
-    padding:0 16px 80px;
-  }
-
-  .grid{
-    display:grid;
-    grid-template-columns: 1fr 380px;
-    gap:18px;
-  }
-
-  /* left column: items */
-  .menu {
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:14px;
-  }
-  .card{
-    background:var(--card);
-    border-radius:var(--radius);
-    padding:14px;
-    box-shadow:var(--shadow);
-    border:1px solid rgba(0,0,0,0.03);
-  }
-  .card h3{margin:0;color:var(--orange);font-size:16px}
-  .card p{margin:8px 0 12px;color:var(--muted);font-size:13px;line-height:1.3}
-  .price{font-weight:700;color:#222;margin-bottom:8px}
-  .card .btn-row{display:flex;gap:8px;align-items:center;justify-content:space-between}
-  .btn{
-    background:var(--orange);
-    color:white;border:none;padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer;
-    box-shadow:0 4px 10px rgba(255,123,0,0.15);
-  }
-  .btn:active{transform:translateY(1px)}
-  .qty{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    background:#fff;
-    border-radius:10px;
-    padding:4px;
-    border:1px solid #eee;
-  }
-  .qty button{background:transparent;border:none;cursor:pointer;font-weight:700;padding:6px}
-
-  /* right column: checkout */
-  .checkout{
-    position:sticky;
-    top:18px;
-    align-self:start;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-  .summary{
-    background:var(--card);
-    border-radius:var(--radius);
-    padding:14px;
-    box-shadow:var(--shadow);
-    border:1px solid rgba(0,0,0,0.03);
-  }
-  .summary h2{margin:0;font-size:16px;color:#333}
-  #cartList{margin:12px 0 0;padding:0;list-style:none;max-height:220px;overflow:auto}
-  #cartList li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f0f0f0;font-size:14px}
-  .cart-actions{display:flex;gap:8px;margin-top:10px}
-
-  label{display:block;font-size:13px;color:#444;margin-bottom:6px}
-  input[type="text"], input[type="number"], select, textarea{
-    width:100%;
-    padding:8px 10px;border-radius:10px;border:1px solid #eee;background:#fff;font-size:14px;
-  }
-  .row{display:flex;gap:8px}
-  .row > *{flex:1}
-
-  .muted{color:var(--muted);font-size:13px}
-  .hint{font-size:13px;color:#666;margin-top:6px}
-
-  .actions{display:flex;gap:8px;margin-top:12px}
-  .secondary{background:#fff;border:1px solid #eee;color:#333;padding:9px;border-radius:10px;cursor:pointer}
-  .danger{background:var(--danger);color:white;border:none;padding:9px;border-radius:10px;cursor:pointer}
-
-  .open-badge{
-    display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(27,154,69,0.12);color:var(--success);font-weight:600;font-size:13px;
-  }
-  .closed-badge{
-    display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(231,76,60,0.08);color:var(--danger);font-weight:700;font-size:13px;
-  }
-
-  .small{font-size:12px;color:#666}
-  footer{max-width:1100px;margin:20px auto 60px;padding:0 16px;color:#777;font-size:13px;text-align:center}
-
-  /* responsive */
-  @media (max-width:900px){
-    .grid{grid-template-columns:1fr}
-    .checkout{position:relative;top:0}
-  }
+:root{
+  --orange:#ff7b00;
+  --orange-dark:#e36f00;
+  --bg:#fff8f0;
+  --card:#ffffff;
+  --muted:#6b6b6b;
+  --success:#1b9a45;
+  --danger:#e74c3c;
+  --shadow:0 6px 20px rgba(0,0,0,0.08);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Inter',system-ui;
+  background:linear-gradient(180deg,#fffaf6 0%,var(--bg) 100%);
+  color:#222;
+}
+header{
+  background:linear-gradient(90deg,var(--orange),var(--orange-dark));
+  color:white;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+header h1{margin:0;font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
+.wrap{max-width:1100px;margin:18px auto;padding:0 16px 80px}
+.grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0;color:var(--orange);font-size:16px}
+.card p{margin:8px 0 12px;color:var(--muted);font-size:13px;line-height:1.3}
+.price{font-weight:700;margin-bottom:8px}
+.btn{background:var(--orange);color:#fff;border:none;padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 4px 10px rgba(255,123,0,0.15)}
+.secondary{background:#fff;border:1px solid #eee;color:#333;padding:9px;border-radius:10px;cursor:pointer}
+.checkout{position:sticky;top:18px;display:flex;flex-direction:column;gap:12px}
+.summary{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+#cartList{list-style:none;padding:0;margin:10px 0;max-height:200px;overflow:auto}
+#cartList li{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed #eee;padding:6px 0}
+label{font-size:13px;color:#444;margin-bottom:4px;display:block}
+input,select,textarea{width:100%;padding:8px;border-radius:10px;border:1px solid #eee;font-size:14px}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.checkout{position:relative;top:0}}
 </style>
 </head>
 <body>
-
 <header>
-  <div style="display:flex;align-items:center;gap:12px">
-    <h1>🍔 Vidal Burgers</h1>
-    <small class="small">Cardápio Interativo</small>
-  </div>
-  <div id="statusArea">
-      </div>
+  <h1>🍔 Vidal Burgers</h1>
+  <div style="font-size:13px">Aberto para testes 24h ✅</div>
 </header>
 
 <main class="wrap">
-  <div class="grid">
+  <div class="grid">
+    <section>
+      <div style="margin-bottom:10px;color:#555;font-size:14px">
+        Monte seu pedido e envie direto pelo WhatsApp ↓
+      </div>
+      <div class="menu" id="menuList"></div>
+    </section>
 
-        <section>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div>
-          <div class="small muted">Como funciona →</div>
-          <div style="font-weight:700">Toque em <span style="color:var(--orange)">Adicionar</span> para montar seu pedido. Use o carrinho à direita para revisar.</div>
-        </div>
-        <div class="small muted" style="text-align:right">
-          Aberto: Qua–Dom • 18:00–23:00
-        </div>
-      </div>
+    <aside class="checkout">
+      <div class="summary">
+        <h2>🛒 Seu Pedido</h2>
+        <div id="emptyHint" style="font-size:13px;color:#777">Nenhum item adicionado.</div>
+        <ul id="cartList"></ul>
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subtotal">R$ 0,00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Taxa</span><span id="deliveryFee">R$ 0,00</span></div>
+        <hr>
+        <div style="display:flex;justify-content:space-between;font-weight:700"><span>Total</span><span id="total">R$ 0,00</span></div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn" onclick="toggleCheckoutOptions()">Finalizar</button>
+          <button class="secondary" onclick="clearCart()">Limpar</button>
+        </div>
 
-      <div class="menu" id="menuList">
-              </div>
-    </section>
+        <div id="checkoutOptions" style="display:none;margin-top:10px">
+          <label>Entrega ou Retirada?</label>
+          <div class="row">
+            <button id="optPickup" class="secondary" onclick="setDelivery(false)">Retirada</button>
+            <button id="optDelivery" class="secondary" onclick="setDelivery(true)">Entrega + R$10</button>
+          </div>
 
-        <aside class="checkout">
-      <div class="summary">
-        <h2>🛒 Seu Pedido</h2>
-        <div id="emptyHint" class="muted" style="margin-top:8px">Nenhum item adicionado. Escolha seus lanches à esquerda →</div>
-        <ul id="cartList" aria-live="polite"></ul>
+          <div id="addressBlock" style="display:none;margin-top:10px">
+            <label>CEP</label>
+            <div class="row">
+              <input id="cep" placeholder="Ex: 15025-410" maxlength="9" oninput="handleCepInput(event)">
+              <button class="btn" style="flex:0 0 100px" onclick="buscarCep()">Buscar</button>
+            </div>
+            <div id="addressFields" hidden style="margin-top:10px">
+              <label>Endereço</label>
+              <input id="logradouro" placeholder="Rua">
+              <div class="row" style="margin-top:8px">
+                <input id="numero" placeholder="Número">
+                <input id="complemento" placeholder="Complemento">
+              </div>
+              <div class="row" style="margin-top:8px">
+                <input id="bairro" placeholder="Bairro">
+                <input id="cidade" placeholder="Cidade/UF">
+              </div>
+            </div>
+          </div>
 
-        <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
-          <div class="muted">Subtotal</div>
-          <div id="subtotal">R$ 0,00</div>
-        </div>
-        <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center">
-          <div class="muted">Taxa de entrega</div>
-          <div id="deliveryFee">R$ 0,00</div>
-        </div>
-        <hr style="margin:12px 0;border:none;border-top:1px dashed #f0f0f0">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700">Total</div>
-          <div id="total" style="font-weight:700">R$ 0,00</div>
-        </div>
+          <label style="margin-top:10px">Forma de pagamento</label>
+          <select id="paymentMethod" onchange="onPaymentChange()">
+            <option value="">-- Escolha --</option>
+            <option value="pix">PIX</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="cartao">Cartão</option>
+          </select>
 
-        <div class="cart-actions" style="margin-top:12px">
-          <button class="btn" onclick="toggleCheckoutOptions()">⤵ Finalizar pedido</button>
-          <button class="secondary" onclick="clearCart()">🧹 Limpar carrinho</button>
-        </div>
+          <div id="cardOptions" style="display:none;margin-top:8px">
+            <div class="row">
+              <select id="cardType"><option>Crédito</option><option>Débito</option></select>
+              <select id="cardBrand"><option>Visa</option><option>Mastercard</option><option>Elo</option><option>Hipercard</option></select>
+            </div>
+          </div>
 
-                <div id="checkoutOptions" style="display:none;margin-top:12px">
-          <div style="margin-bottom:8px"><label>Entrega ou Retirada?</label>
-            <div style="display:flex;gap:8px">
-              <button id="optPickup" class="secondary" style="flex:1" onclick="setDelivery(false)">Retirar no local</button>
-              <button id="optDelivery" class="secondary" style="flex:1" onclick="setDelivery(true)">Entrega + R$ 10,00</button>
-            </div>
-            <div class="hint">Escolha a opção de entrega para continuar ↓</div>
-          </div>
+          <label style="margin-top:10px">Observações</label>
+          <textarea id="obs" rows="2" placeholder="Ex: sem cebola..."></textarea>
 
-          <div id="addressBlock" style="display:none;margin-top:10px">
-            <label>CEP</label>
-            <div class="row">
-              <input id="cep" placeholder="Ex: 15025-410" maxlength="9" oninput="handleCepInput(event)">
-              <button class="btn" style="width:120px;flex:0" onclick="buscarCep()">Buscar</button>
-            </div>
-            <div class="hint">Digite o CEP e clique em Buscar para preencher automaticamente</div>
-
-            <div style="margin-top:10px" id="addressFields" hidden>
-              <label>Endereço</label>
-              <input id="logradouro" placeholder="Rua">
-              <div class="row" style="margin-top:8px">
-                <input id="numero" placeholder="Número">
-                <input id="complemento" placeholder="Complemento (opcional)">
-              </div>
-              <div style="margin-top:8px" class="row">
-                <input id="bairro" placeholder="Bairro">
-                <input id="cidade" placeholder="Cidade/UF">
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:10px">
-            <label>Forma de pagamento</label>
-            <select id="paymentMethod" onchange="onPaymentChange()">
-              <option value="">-- Escolha --</option>
-              <option value="pix">PIX</option>
-              <option value="dinheiro">Dinheiro</option>
-              <option value="cartao">Cartão</option>
-            </select>
-          </div>
-
-          <div id="cardOptions" style="display:none;margin-top:8px">
-            <label>Tipo de pagamento</label>
-            <div class="row">
-              <select id="cardType">
-                <option value="credito">Crédito</option>
-                <option value="debito">Débito</option>
-              </select>
-              <select id="cardBrand">
-                <option value="Visa">Visa</option>
-                <option value="Mastercard">Mastercard</option>
-                <option value="Elo">Elo</option>
-                <option value="Hipercard">Hipercard</option>
-                <option value="Outros">Outros</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="margin-top:10px">
-            <label>Observações</label>
-            <textarea id="obs" rows="3" placeholder="Ex.: sem cebola, maionese à parte..."></textarea>
-          </div>
-
-          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-            <button class="btn" onclick="sendOrder()">📲 Enviar pelo WhatsApp</button>
-            <button class="secondary" onclick="toggleCheckoutOptions()">✖ Cancelar</button>
-          </div>
-        </div>
-
-      </div>
-
-      <div style="font-size:13px;color:#666;text-align:center;padding:8px">
-        <div class="small muted">Dúvidas? Teste o envio para o número do portfólio.</div>
-        <div class="hint" style="margin-top:6px">Siga as setas e campos com cuidado →</div>
-      </div>
-    </aside>
-
-  </div>
+          <button class="btn" style="margin-top:10px;width:100%" onclick="sendOrder()">📲 Enviar via WhatsApp</button>
+        </div>
+      </div>
+    </aside>
+  </div>
 </main>
 
-<footer>
-  Desenvolvido por Lucas Vidal — Cardápios digitais interativos. Hospedagem rápida via GitHub Pages.
+<footer style="text-align:center;color:#777;font-size:13px;margin:20px 0">
+  Desenvolvido por Lucas Vidal — Cardápio interativo de portfólio 🍔
 </footer>
 
 <script>
-/* ---------- CONFIGURAÇÃO (edite só aqui se precisar) ---------- */
-const numeroWhatsApp = "5517991213435"; // VIDAL (número do portfólio)
-const DELIVERY_FEE = 10.00; // taxa de entrega fixa em R$
-const openDays = [3,4,5,6,0]; // Wed(3) Thu(4) Fri(5) Sat(6) Sun(0)
-const openHour = 18; // abre às 18:00
-const closeHour = 23; // fecha às 23:00 (não aceitar novos pedidos após 23h)
-const currency = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-/* ---------- ITENS DO CARDÁPIO ---------- */
+const numeroWhatsApp = "5517991213435";
+const DELIVERY_FEE = 10.00;
+const currency = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 const itensCardapio = [
-  { nome: "Egg Burguer", preco: 25.00, descricao:"Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana." },
-  { nome: "Cheddar & Bacon", preco: 28.00, descricao:"Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue no pão australiano." },
-  { nome: "Duplo Sabor", preco: 32.00, descricao:"Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada." },
-  { nome: "Veggie Grill", preco: 32.00, descricao:"Hambúrguer de grão-de-bico, queijo vegano, alface, tomate e molho de iogurte natural." },
-  { nome: "Clássico da Casa", preco: 24.00, descricao:"Pão brioche, hambúrguer 150g, queijo prato, alface, tomate e maionese especial." },
-  { nome: "Smash Tradicional", preco: 27.00, descricao:"Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa no pão macio." }
+  {nome:"Egg Burguer",preco:25,descricao:"Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana."},
+  {nome:"Cheddar & Bacon",preco:28,descricao:"Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue."},
+  {nome:"Duplo Sabor",preco:32,descricao:"Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada."},
+  {nome:"Veggie Grill",preco:32,descricao:"Hambúrguer de grão-de-bico, queijo vegano, alface, tomate e molho de iogurte natural."},
+  {nome:"Clássico da Casa",preco:24,descricao:"Pão brioche, hambúrguer 150g, queijo prato, alface, tomate e maionese especial."},
+  {nome:"Smash Tradicional",preco:27,descricao:"Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa."}
 ];
-
-/* ---------- ESTADO ---------- */
-let carrinho = {}; // { "Egg Burguer": 2, ... }
-let isDelivery = false;
-
-/* ---------- RENDER / INTERAÇÃO ---------- */
-function init(){
-  renderMenu();
-  updateCartUI();
-  checkOpenStatus();
-  // show arrows/hints? we already have hints in UI
-}
+let carrinho={},isDelivery=false;
+const menu=document.getElementById('menuList');
 function renderMenu(){
-  const menu = document.getElementById('menuList');
-  menu.innerHTML = "";
-  itensCardapio.forEach((it, idx) => {
-    const el = document.createElement('div');
-    el.className = 'card';
-    el.innerHTML = `
-      <h3>${it.nome}</h3>
-      <p>${it.descricao}</p>
-      <div class="price">${currency.format(it.preco)}</div>
-      <div class="btn-row">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="qty" aria-hidden>
-            <button onclick="decreaseItem(${idx})">−</button>
-            <div id="qty-${idx}" style="min-width:20px;text-align:center">0</div>
-            <button onclick="increaseItem(${idx})">+</button>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button class="btn" onclick="addItemByIndex(${idx})">Adicionar</button>
-        </div>
-      </div>
-    `;
-    menu.appendChild(el);
-  });
+  menu.innerHTML="";
+  itensCardapio.forEach((it,i)=>{
+    const div=document.createElement('div');
+    div.className="card";
+    div.innerHTML=`
+      <h3>${it.nome}</h3><p>${it.descricao}</p><div class='price'>${currency.format(it.preco)}</div>
+      <button class='btn' onclick="addItem('${it.nome}')">Adicionar</button>`;
+    menu.appendChild(div);
+  });
 }
-function addItemByIndex(i){
-  addItem(itensCardapio[i].nome);
-  increaseQtyBadge(i);
+function addItem(n){carrinho[n]=(carrinho[n]||0)+1;updateCart();}
+function clearCart(){carrinho={};updateCart();}
+function updateCart(){
+  const list=document.getElementById('cartList'),hint=document.getElementById('emptyHint');
+  list.innerHTML="";let sub=0;
+  const keys=Object.keys(carrinho);
+  hint.style.display=keys.length?"none":"block";
+  keys.forEach(k=>{
+    const it=itensCardapio.find(i=>i.nome==k);
+    const li=document.createElement('li');
+    sub+=it.preco*carrinho[k];
+    li.innerHTML=`<div><strong>${k}</strong> x${carrinho[k]}</div>
+    <div>
+      <button class='secondary' onclick="remItem('${k}')">−</button>
+      <button class='btn' onclick="addItem('${k}')">+</button>
+    </div>`;
+    list.appendChild(li);
+  });
+  const taxa=isDelivery?DELIVERY_FEE:0;
+  document.getElementById('subtotal').innerText=currency.format(sub);
+  document.getElementById('deliveryFee').innerText=currency.format(taxa);
+  document.getElementById('total').innerText=currency.format(sub+taxa);
 }
-function increaseItem(i){
-  addItem(itensCardapio[i].nome);
-  increaseQtyBadge(i);
-}
-function decreaseItem(i){
-  removeOneItem(itensCardapio[i].nome);
-  decreaseQtyBadge(i);
-}
-function increaseQtyBadge(i){
-  const el = document.getElementById(`qty-${i}`);
-  if(!el) return;
-  const curr = parseInt(el.textContent)||0;
-  el.textContent = curr + 1;
-}
-function decreaseQtyBadge(i){
-  const el = document.getElementById(`qty-${i}`);
-  if(!el) return;
-  const curr = parseInt(el.textContent)||0;
-  el.textContent = Math.max(0,curr-1);
-}
-
-function addItem(name){
-  carrinho[name] = (carrinho[name] || 0) + 1;
-  updateCartUI();
-}
-function removeOneItem(name){
-  if(!carrinho[name]) return;
-  carrinho[name]--;
-  if(carrinho[name] <= 0) delete carrinho[name];
-  updateCartUI();
-}
-function clearCart(){
-  if(Object.keys(carrinho).length === 0){
-    alert("O carrinho já está vazio!");
-    return;
-  }
-  if(confirm("Tem certeza que deseja limpar o carrinho?")){
-    carrinho = {};
-    // reset qty badges
-    itensCardapio.forEach((it, idx) => {
-      const el = document.getElementById(`qty-${idx}`);
-      if(el) el.textContent = "0";
-    });
-    updateCartUI();
-  }
-}
-
-function updateCartUI(){
-  const list = document.getElementById('cartList');
-  const emptyHint = document.getElementById('emptyHint');
-  list.innerHTML = "";
-  const keys = Object.keys(carrinho);
-  if(keys.length === 0){
-    emptyHint.style.display = "block";
-  } else {
-    emptyHint.style.display = "none";
-  }
-  let subtotal = 0;
-  keys.forEach(name => {
-    const qty = carrinho[name];
-    const item = itensCardapio.find(i=>i.nome===name);
-    const line = document.createElement('li');
-    const lineRight = document.createElement('div');
-    line.style.display = "flex";
-    line.style.justifyContent = "space-between";
-    line.style.alignItems = "center";
-    line.innerHTML = `<div style="max-width:65%"><strong>${name}</strong><div class="small muted">${currency.format(item.preco)} • x${qty}</div></div>`;
-    const controls = document.createElement('div');
-    controls.innerHTML = `
-      <div style="display:flex;align-items:center;gap:8px">
-        <button class="secondary" onclick="removeOneItem('${name}')">−</button>
-        <div style="min-width:26px;text-align:center">${qty}</div>
-        <button class="btn" style="padding:6px 8px" onclick="addItem('${name}')">+</button>
-        <button class="secondary" style="margin-left:8px" onclick="removeAllOf('${name}')">Remover</button>
-      </div>
-    `;
-    line.appendChild(controls);
-    list.appendChild(line);
-    subtotal += item.preco * qty;
-  });
-  document.getElementById('subtotal').textContent = currency.format(subtotal);
-  const fee = isDelivery ? DELIVERY_FEE : 0;
-  document.getElementById('deliveryFee').textContent = currency.format(fee);
-  document.getElementById('total').textContent = currency.format(subtotal + fee);
-}
-
-function removeAllOf(name){
-  if(carrinho[name]){
-    delete carrinho[name];
-    // reset qty badges
-    itensCardapio.forEach((it, idx) => {
-      if(it.nome === name){
-        const el = document.getElementById(`qty-${idx}`);
-        if(el) el.textContent = "0";
-      }
-    });
-  }
-  updateCartUI();
-}
-
-/* ---------- CHECK OPEN STATUS (CORRIGIDO PARA ESTAR SEMPRE ABERTO) ---------- */
-function checkOpenStatus(){
-  const statusArea = document.getElementById('statusArea');
-  // Alteração feita aqui para forçar o status para sempre Aberto:
-  const open = true;
-  
-  if(open){
-    statusArea.innerHTML = `<div class="open-badge">● Aberto agora</div>`;
-  } else {
-    statusArea.innerHTML = `<div class="closed-badge">● Fechado no momento</div>`;
-  }
-  // A lógica de bloqueio do botão de finalizar pedido não é mais necessária, pois está sempre aberto.
-}
-
-/* ---------- CHECKOUT FLOW ---------- */
+function remItem(n){if(carrinho[n]>1)carrinho[n]--;else delete carrinho[n];updateCart();}
 function toggleCheckoutOptions(){
-  const co = document.getElementById('checkoutOptions');
-  co.style.display = co.style.display === 'none' || co.style.display === '' ? 'block' : 'none';
+  const co=document.getElementById('checkoutOptions');
+  co.style.display=co.style.display==='none'||!co.style.display?'block':'none';
 }
-// Essa função duplicada foi removida do código original, mas vou mantê-la aqui por consistência com o que você enviou:
-// function toggleCheckoutOptions(){
-//   const co = document.getElementById('checkoutOptions');
-//   co.style.display = co.style.display === 'none' || co.style.display === '' ? 'block' : 'none';
-// }
-
-
-function setDelivery(flag){
-  isDelivery = flag;
-  document.getElementById('addressBlock').style.display = flag ? 'block' : 'none';
-  // update fee
-  updateCartUI();
-  // highlight selected
-  document.getElementById('optDelivery').style.background = flag ? 'var(--orange)' : '#fff';
-  document.getElementById('optDelivery').style.color = flag ? '#fff' : '#333';
-  document.getElementById('optPickup').style.background = flag ? '#fff' : 'var(--orange)';
-  document.getElementById('optPickup').style.color = flag ? '#333' : '#fff';
+function setDelivery(f){
+  isDelivery=f;
+  document.getElementById('addressBlock').style.display=f?'block':'none';
+  document.getElementById('optDelivery').style.background=f?'var(--orange)':'#fff';
+  document.getElementById('optDelivery').style.color=f?'#fff':'#333';
+  document.getElementById('optPickup').style.background=f?'#fff':'var(--orange)';
+  document.getElementById('optPickup').style.color=f?'#333':'#fff';
+  updateCart();
 }
-
-/* ---------- CEP / VIA CEP ---------- */
-function handleCepInput(e){
-  // allow only numbers and hyphen
-  const v = e.target.value.replace(/[^0-9\-]/g,'');
-  e.target.value = v;
-}
+function handleCepInput(e){e.target.value=e.target.value.replace(/[^0-9\-]/g,'');}
 function buscarCep(){
-  const cepRaw = document.getElementById('cep').value.replace(/\D/g,'');
-  if(!cepRaw || cepRaw.length !== 8){
-    alert("Informe um CEP válido (8 dígitos).");
-    return;
-  }
-  const url = `https://viacep.com.br/ws/${cepRaw}/json/`;
-  document.getElementById('addressFields').hidden = true;
-  fetch(url).then(r=>r.json()).then(data=>{
-    if(data.erro){
-      alert("CEP não encontrado. Preencha o endereço manualmente.");
-      return;
-    }
-    document.getElementById('logradouro').value = data.logradouro || "";
-    document.getElementById('bairro').value = data.bairro || "";
-    document.getElementById('cidade').value = (data.localidade ? data.localidade + " / " : "") + (data.uf || "");
-    document.getElementById('addressFields').hidden = false;
-  }).catch(err=>{
-    alert("Erro ao buscar CEP. Tente novamente.");
-    console.error(err);
-  });
+  const cep=document.getElementById('cep').value.replace(/\D/g,'');
+  if(cep.length!==8){alert("CEP inválido.");return;}
+  fetch(`https://viacep.com.br/ws/${cep}/json/`).then(r=>r.json()).then(d=>{
+    if(d.erro){alert("CEP não encontrado.");return;}
+    document.getElementById('logradouro').value=d.logradouro||"";
+    document.getElementById('bairro').value=d.bairro||"";
+    document.getElementById('cidade').value=(d.localidade||"")+" / "+(d.uf||"");
+    document.getElementById('addressFields').hidden=false;
+  });
 }
-
-/* ---------- PAGAMENTO ---------- */
 function onPaymentChange(){
-  const v = document.getElementById('paymentMethod').value;
-  document.getElementById('cardOptions').style.display = v === 'cartao' ? 'block' : 'none';
+  const v=document.getElementById('paymentMethod').value;
+  document.getElementById('cardOptions').style.display=v==='cartao'?'block':'none';
 }
-
-/* ---------- ENVIAR PEDIDO ---------- */
 function sendOrder(){
-  if(Object.keys(carrinho).length === 0){
-    alert("Adicione ao menos um item ao pedido.");
-    return;
-  }
-
-  // validate delivery data if delivery selected
-  let addressText = "Retirada no estabelecimento";
-  if(isDelivery){
-    const cep = document.getElementById('cep').value.trim();
-    const log = document.getElementById('logradouro').value.trim();
-    const num = document.getElementById('numero').value.trim();
-    const comp = document.getElementById('complemento').value.trim();
-    const bairro = document.getElementById('bairro').value.trim();
-    const cidade = document.getElementById('cidade').value.trim();
-    if(!cep || !log || !num || !bairro || !cidade){
-      alert("Por favor, preencha o CEP e confirme o endereço (logradouro, número, bairro e cidade).");
-      return;
-    }
-    addressText = `${log}, ${num}${comp ? " - " + comp : ""} - ${bairro} - ${cidade} (CEP: ${cep})`;
-  }
-
-  const payment = document.getElementById('paymentMethod').value;
-  if(!payment){
-    alert("Escolha a forma de pagamento.");
-    return;
-  }
-  let paymentText = "";
-  if(payment === 'pix') paymentText = "PIX";
-  else if(payment === 'dinheiro') paymentText = "Dinheiro";
-  else if(payment === 'cartao'){
-    const ct = document.getElementById('cardType').value;
-    const cb = document.getElementById('cardBrand').value;
-    paymentText = `Cartão (${ct}) - ${cb}`;
-  }
-
-  const obs = document.getElementById('obs').value.trim();
-
-  // build items list and totals
-  let mensagem = `Olá! Quero fazer meu pedido para *Vidal Burgers*:%0A%0A`;
-  let subtotal = 0;
-  Object.keys(carrinho).forEach(name=>{
-    const qty = carrinho[name];
-    const item = itensCardapio.find(i=>i.nome===name);
-    mensagem += `- ${name} x${qty} (${currency.format(item.preco)} cada)%0A`;
-    subtotal += item.preco * qty;
-  });
-  const fee = isDelivery ? DELIVERY_FEE : 0;
-  const total = subtotal + fee;
-  mensagem += `%0A*Entrega:* ${isDelivery ? addressText : "Retirar no estabelecimento"}%0A`;
-  if(isDelivery) mensagem += `*Taxa de entrega:* ${currency.format(fee)}%0A`;
-  mensagem += `*Pagamento:* ${paymentText}%0A`;
-  if(obs) mensagem += `*Observações:* ${obs}%0A`;
-  mensagem += `%0A*Subtotal:* ${currency.format(subtotal)}%0A`;
-  if(isDelivery) mensagem += `*Total:* ${currency.format(total)}%0A`;
-  mensagem += `%0AObrigado(a)! 😊`;
-
-  const link = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(decodeURIComponent(mensagem))}`;
-  window.open(link, '_blank');
+  if(Object.keys(carrinho).length===0){alert("Adicione algo ao carrinho!");return;}
+  let endereco="Retirada no local";
+  if(isDelivery){
+    const cep=document.getElementById('cep').value.trim();
+    const log=document.getElementById('logradouro').value.trim();
+    const num=document.getElementById('numero').value.trim();
+    const bai=document.getElementById('bairro').value.trim();
+    const cid=document.getElementById('cidade').value.trim();
+    if(!cep||!log||!num||!bai||!cid){alert("Preencha o endereço completo.");return;}
+    endereco=`${log}, ${num} - ${bai} - ${cid} (CEP: ${cep})`;
+  }
+  const pag=document.getElementById('paymentMethod').value;
+  let pagamento="";
+  if(pag==='pix')pagamento="PIX";
+  else if(pag==='dinheiro')pagamento="Dinheiro";
+  else if(pag==='cartao')pagamento=`Cartão ${document.getElementById('cardType').value} - ${document.getElementById('cardBrand').value}`;
+  const obs=document.getElementById('obs').value.trim();
+  let msg=`Olá! Quero pedir na *Vidal Burgers*:%0A%0A`;
+  let sub=0;Object.keys(carrinho).forEach(k=>{const it=itensCardapio.find(i=>i.nome==k);sub+=it.preco*carrinho[k];msg+=`- ${k} x${carrinho[k]} (${currency.format(it.preco)})%0A`;});
+  const taxa=isDelivery?DELIVERY_FEE:0,total=sub+taxa;
+  msg+=`%0A*Entrega:* ${endereco}%0A*Pagamento:* ${pagamento}%0A`;
+  if(obs)msg+=`*Obs:* ${obs}%0A`;
+  msg+=`*Total:* ${currency.format(total)}%0A`;
+  window.open(`https://wa.me/${numeroWhatsApp}?text=${msg}`,'_blank');
 }
-
-/* ---------- util ---------- */
-function formatCurrency(n){ return currency.format(n); }
-
-/* ---------- init ---------- */
-init();
-
+renderMenu();
+updateCart();
 </script>
 </body>
 </html>
