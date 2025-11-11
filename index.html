@@ -6,14 +6,12 @@
 <title>Vidal Burgers — Cardápio Interativo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
+:root {
   --orange:#ff7b00;
   --orange-dark:#e36f00;
   --bg:#fff8f0;
   --card:#ffffff;
   --muted:#6b6b6b;
-  --success:#1b9a45;
-  --danger:#e74c3c;
   --shadow:0 6px 20px rgba(0,0,0,0.08);
   --radius:14px;
 }
@@ -35,7 +33,7 @@ header{
 header h1{margin:0;font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
 .wrap{max-width:1100px;margin:18px auto;padding:0 16px 80px}
 .grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
-.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:10px}
 .card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
 .card h3{margin:0;color:var(--orange);font-size:16px}
 .card p{margin:8px 0 12px;color:var(--muted);font-size:13px;line-height:1.3}
@@ -50,6 +48,9 @@ label{font-size:13px;color:#444;margin-bottom:4px;display:block}
 input,select,textarea{width:100%;padding:8px;border-radius:10px;border:1px solid #eee;font-size:14px}
 .row{display:flex;gap:8px}
 .row>*{flex:1}
+.tabs{display:flex;gap:8px;margin-bottom:8px}
+.tab{flex:1;padding:10px;border-radius:10px;border:1px solid #eee;background:#fff;cursor:pointer;font-weight:600;text-align:center}
+.tab.active{background:var(--orange);color:#fff;border:none}
 @media(max-width:900px){.grid{grid-template-columns:1fr}.checkout{position:relative;top:0}}
 </style>
 </head>
@@ -62,10 +63,12 @@ input,select,textarea{width:100%;padding:8px;border-radius:10px;border:1px solid
 <main class="wrap">
   <div class="grid">
     <section>
-      <div style="margin-bottom:10px;color:#555;font-size:14px">
-        Monte seu pedido e envie direto pelo WhatsApp ↓
+      <div class="tabs">
+        <div class="tab active" id="tab-lanches" onclick="switchTab('lanches')">🍔 Lanches</div>
+        <div class="tab" id="tab-bebidas" onclick="switchTab('bebidas')">🥤 Bebidas</div>
       </div>
-      <div class="menu" id="menuList"></div>
+
+      <div id="menuList" class="menu"></div>
     </section>
 
     <aside class="checkout">
@@ -139,10 +142,11 @@ input,select,textarea{width:100%;padding:8px;border-radius:10px;border:1px solid
 </footer>
 
 <script>
-const numeroWhatsApp = "5517991213435";
-const DELIVERY_FEE = 10.00;
-const currency = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
-const itensCardapio = [
+const numeroWhatsApp="5517991213435";
+const DELIVERY_FEE=10.00;
+const currency=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+
+const lanches=[
   {nome:"Egg Burguer",preco:25,descricao:"Hambúrguer suculento, ovo frito, queijo muçarela, maionese caseira e alface americana."},
   {nome:"Cheddar & Bacon",preco:28,descricao:"Hambúrguer bovino, cheddar cremoso, bacon crocante e molho barbecue."},
   {nome:"Duplo Sabor",preco:32,descricao:"Dois hambúrgueres 120g, queijo duplo, cebola caramelizada e maionese defumada."},
@@ -150,35 +154,51 @@ const itensCardapio = [
   {nome:"Clássico da Casa",preco:24,descricao:"Pão brioche, hambúrguer 150g, queijo prato, alface, tomate e maionese especial."},
   {nome:"Smash Tradicional",preco:27,descricao:"Dois smash burgers finos, queijo, picles, cebola roxa e molho da casa."}
 ];
+const bebidas=[
+  {nome:"Coca-Cola Lata 350ml",preco:6,descricao:"Refrigerante Coca-Cola tradicional em lata 350ml."},
+  {nome:"Coca-Cola 1L",preco:9,descricao:"Refrigerante Coca-Cola garrafa 1 litro."},
+  {nome:"Guaraná Antarctica Lata 350ml",preco:5,descricao:"Refrigerante Guaraná Antarctica em lata 350ml."},
+  {nome:"Guaraná Antarctica 1L",preco:8,descricao:"Refrigerante Guaraná Antarctica garrafa 1 litro."},
+  {nome:"Heineken Long Neck 330ml",preco:12,descricao:"Cerveja Heineken Long Neck 330ml."},
+  {nome:"Brahma 600ml",preco:10,descricao:"Cerveja Brahma garrafa 600ml."},
+  {nome:"Suco Natural de Laranja 300ml",preco:8,descricao:"Suco natural de laranja 300ml, fresco e gelado."},
+  {nome:"Suco de Maracujá 300ml",preco:8,descricao:"Suco natural de maracujá 300ml, refrescante e equilibrado."}
+];
+
+let categoriaAtual="lanches";
 let carrinho={},isDelivery=false;
-const menu=document.getElementById('menuList');
+
+function switchTab(tab){
+  categoriaAtual=tab;
+  document.getElementById('tab-lanches').classList.toggle('active',tab==='lanches');
+  document.getElementById('tab-bebidas').classList.toggle('active',tab==='bebidas');
+  renderMenu();
+}
+
 function renderMenu(){
+  const itens=categoriaAtual==='lanches'?lanches:bebidas;
+  const menu=document.getElementById('menuList');
   menu.innerHTML="";
-  itensCardapio.forEach((it,i)=>{
+  itens.forEach(it=>{
     const div=document.createElement('div');
     div.className="card";
-    div.innerHTML=`
-      <h3>${it.nome}</h3><p>${it.descricao}</p><div class='price'>${currency.format(it.preco)}</div>
-      <button class='btn' onclick="addItem('${it.nome}')">Adicionar</button>`;
+    div.innerHTML=`<h3>${it.nome}</h3><p>${it.descricao}</p><div class='price'>${currency.format(it.preco)}</div><button class='btn' onclick="addItem('${it.nome}',${it.preco})">Adicionar</button>`;
     menu.appendChild(div);
   });
 }
-function addItem(n){carrinho[n]=(carrinho[n]||0)+1;updateCart();}
+function addItem(n,p){carrinho[n]={qtd:(carrinho[n]?.qtd||0)+1,preco:p};updateCart();}
+function remItem(n){if(carrinho[n].qtd>1)carrinho[n].qtd--;else delete carrinho[n];updateCart();}
 function clearCart(){carrinho={};updateCart();}
 function updateCart(){
   const list=document.getElementById('cartList'),hint=document.getElementById('emptyHint');
-  list.innerHTML="";let sub=0;
-  const keys=Object.keys(carrinho);
+  list.innerHTML="";let sub=0;const keys=Object.keys(carrinho);
   hint.style.display=keys.length?"none":"block";
   keys.forEach(k=>{
-    const it=itensCardapio.find(i=>i.nome==k);
+    const it=carrinho[k];
+    sub+=it.preco*it.qtd;
     const li=document.createElement('li');
-    sub+=it.preco*carrinho[k];
-    li.innerHTML=`<div><strong>${k}</strong> x${carrinho[k]}</div>
-    <div>
-      <button class='secondary' onclick="remItem('${k}')">−</button>
-      <button class='btn' onclick="addItem('${k}')">+</button>
-    </div>`;
+    li.innerHTML=`<div><strong>${k}</strong> x${it.qtd}</div>
+    <div><button class='secondary' onclick="remItem('${k}')">−</button><button class='btn' onclick="addItem('${k}',${it.preco})">+</button></div>`;
     list.appendChild(li);
   });
   const taxa=isDelivery?DELIVERY_FEE:0;
@@ -186,7 +206,6 @@ function updateCart(){
   document.getElementById('deliveryFee').innerText=currency.format(taxa);
   document.getElementById('total').innerText=currency.format(sub+taxa);
 }
-function remItem(n){if(carrinho[n]>1)carrinho[n]--;else delete carrinho[n];updateCart();}
 function toggleCheckoutOptions(){
   const co=document.getElementById('checkoutOptions');
   co.style.display=co.style.display==='none'||!co.style.display?'block':'none';
@@ -194,10 +213,7 @@ function toggleCheckoutOptions(){
 function setDelivery(f){
   isDelivery=f;
   document.getElementById('addressBlock').style.display=f?'block':'none';
-  document.getElementById('optDelivery').style.background=f?'var(--orange)':'#fff';
-  document.getElementById('optDelivery').style.color=f?'#fff':'#333';
-  document.getElementById('optPickup').style.background=f?'#fff':'var(--orange)';
-  document.getElementById('optPickup').style.color=f?'#333':'#fff';
+  document.getElementById('optDelivery').classList.toggle('active',f);
   updateCart();
 }
 function handleCepInput(e){e.target.value=e.target.value.replace(/[^0-9\-]/g,'');}
@@ -213,8 +229,7 @@ function buscarCep(){
   });
 }
 function onPaymentChange(){
-  const v=document.getElementById('paymentMethod').value;
-  document.getElementById('cardOptions').style.display=v==='cartao'?'block':'none';
+  document.getElementById('cardOptions').style.display=document.getElementById('paymentMethod').value==='cartao'?'block':'none';
 }
 function sendOrder(){
   if(Object.keys(carrinho).length===0){alert("Adicione algo ao carrinho!");return;}
@@ -235,7 +250,12 @@ function sendOrder(){
   else if(pag==='cartao')pagamento=`Cartão ${document.getElementById('cardType').value} - ${document.getElementById('cardBrand').value}`;
   const obs=document.getElementById('obs').value.trim();
   let msg=`Olá! Quero pedir na *Vidal Burgers*:%0A%0A`;
-  let sub=0;Object.keys(carrinho).forEach(k=>{const it=itensCardapio.find(i=>i.nome==k);sub+=it.preco*carrinho[k];msg+=`- ${k} x${carrinho[k]} (${currency.format(it.preco)})%0A`;});
+  let sub=0;
+  Object.keys(carrinho).forEach(k=>{
+    const it=carrinho[k];
+    sub+=it.preco*it.qtd;
+    msg+=`- ${k} x${it.qtd} (${currency.format(it.preco)})%0A`;
+  });
   const taxa=isDelivery?DELIVERY_FEE:0,total=sub+taxa;
   msg+=`%0A*Entrega:* ${endereco}%0A*Pagamento:* ${pagamento}%0A`;
   if(obs)msg+=`*Obs:* ${obs}%0A`;
